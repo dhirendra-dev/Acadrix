@@ -1,23 +1,15 @@
 {
-  "name": "Quantum Vault — JEE Resources",
-  "short_name": "Quantum Vault",
-  "description": "Curated JEE resources by Quantum Vault",
+  "name": "Acadrix — Your study command center",
+  "short_name": "Acadrix",
+  "description": "A focused, local-first command center for JEE resources.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#2b2b2b",
-  "theme_color": "#2b2b2b",
-  "icons": [
-    {
-      "src": "https://media.base44.com/images/public/6a4fdf2b258cb191501a9b70/8110b5b8f_file_000000005ad88211bae5cf9879f6baf9.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "https://media.base44.com/images/public/6a4fdf2b258cb191501a9b70/8110b5b8f_file_000000005ad88211bae5cf9879f6baf9.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
+  "background_color": "#070b16",
+  "theme_color": "#070b16",
+  "icons": [{
+    "src": "/brand/acadrix-logo.png",
+    "sizes": "1254x1254",
+    "type": "image/png",
+    "purpose": "any maskable"
+  }]
 }

@@ -1,92 +1,40 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useOutlet, Link } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import { Home, FolderOpen, ShieldCheck, BookPlus } from "lucide-react";
-import { useAppSession } from "@/hooks/useAppSession";
-import Footer from "@/components/Footer";
-import JoinChannelsPopup from "@/components/JoinChannelsPopup";
-import FollowGate, { hasFollowedChannels } from "@/components/FollowGate";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { BarChart3, BookOpen, Compass, Inbox, Search, Settings2 } from "lucide-react";
+import { motion } from "framer-motion";
 
-const ADMIN_STORAGE_KEY = "dreamiit_admin_unlocked_v2";
-const ADMIN_EXPIRY_KEY = "dreamiit_admin_expiry_v2";
+const navItems = [
+  { to: "/", label: "Overview", icon: Compass },
+  { to: "/resources", label: "Library", icon: BookOpen },
+  { to: "/requests", label: "Requests", icon: Inbox },
+];
 
 export default function Layout() {
   const location = useLocation();
-  const outlet = useOutlet();
-  useAppSession();
-  const [adminUnlocked, setAdminUnlocked] = useState(false);
-  const [followDone, setFollowDone] = useState(() => hasFollowedChannels());
-
-  useEffect(() => {
-    const stored = localStorage.getItem(ADMIN_STORAGE_KEY) === "true";
-    const expiry = Number(localStorage.getItem(ADMIN_EXPIRY_KEY) || 0);
-    setAdminUnlocked(stored && Date.now() < expiry);
-  }, [location.pathname]);
-
-  const tabs = [
-    { to: "/", label: "Home", icon: Home, exact: true },
-    { to: "/requests", label: "Requests", icon: BookPlus, exact: true },
-    ...(adminUnlocked
-      ? [{ to: "/admin", label: "Admin", icon: ShieldCheck, exact: true }]
-      : []),
-    { to: "/resources", label: "Resources", icon: FolderOpen, exact: false },
-  ];
-
-  const isActive = (tab) => {
-    if (tab.exact) return location.pathname === tab.to;
-    return (
-      location.pathname === tab.to || location.pathname.startsWith("/folder")
-    );
-  };
-
   return (
-    <div className="min-h-screen bg-background overscroll-y-none">
-      <main className="pb-28 md:pb-24">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-          >
-            {outlet}
-          </motion.div>
-        </AnimatePresence>
-        {location.pathname !== "/admin" && <Footer />}
+    <div className="app-shell">
+      <aside className="side-rail">
+        <NavLink to="/" className="brand-lockup" aria-label="Acadrix home">
+          <span className="brand-image"><img src="/brand/acadrix-logo.png" alt="" /></span>
+          <span><strong>Acadrix</strong><small>Study command center</small></span>
+        </NavLink>
+        <div className="rail-label">Workspace</div>
+        <nav className="rail-nav" aria-label="Primary navigation">
+          {navItems.map(({ to, label, icon: Icon }) => <NavLink key={to} to={to} className={({ isActive }) => `rail-link ${isActive ? "is-active" : ""}`} end={to === "/"}><Icon size={18} /><span>{label}</span></NavLink>)}
+        </nav>
+        <div className="rail-label rail-label-lower">Insights</div>
+        <button className="rail-link rail-button" type="button"><BarChart3 size={18} /><span>Progress</span><em>Soon</em></button>
+        <button className="rail-link rail-button" type="button"><Settings2 size={18} /><span>Preferences</span></button>
+        <div className="rail-footer"><div className="status-dot" /><div><strong>Local workspace</strong><span>Your data stays here</span></div></div>
+      </aside>
+      <main className="main-stage">
+        <header className="topbar">
+          <div className="mobile-brand"><img src="/brand/acadrix-logo.png" alt="Acadrix" /><strong>Acadrix</strong></div>
+          <div className="breadcrumbs"><span>Workspace</span><b>/</b><strong>{location.pathname === "/" ? "Overview" : location.pathname.slice(1).replace("/", " · ")}</strong></div>
+          <div className="topbar-actions"><button className="icon-button" aria-label="Search"><Search size={18} /></button><div className="avatar">D</div></div>
+        </header>
+        <motion.div key={location.pathname} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .24, ease: "easeOut" }} className="page-frame"><Outlet /></motion.div>
       </main>
-
-      {/* Mobile floating pill nav */}
-      <nav
-        className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:hidden"
-      >
-        <div className="mx-auto flex max-w-sm items-center justify-around gap-1 rounded-2xl border border-border bg-card/95 p-1.5 shadow-float backdrop-blur-xl">
-          {tabs.map(({ to, label, icon: Icon, exact }) => {
-            const active = isActive({ to, exact });
-            return (
-              <Link
-                key={to}
-                to={to}
-                className={`press-feedback flex flex-1 flex-col items-center gap-0.5 rounded-xl px-2 py-2 text-[11px] font-semibold transition ${
-                  active
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <Icon className="h-[18px] w-[18px]" />
-                {label}
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
-
-      {location.pathname !== "/admin" &&
-        (location.pathname.startsWith("/app") ? (
-          <JoinChannelsPopup appRoute />
-        ) : (
-          !followDone && <FollowGate onDone={() => setFollowDone(true)} />
-        ))}
+      <nav className="mobile-nav" aria-label="Mobile navigation">{navItems.map(({ to, label, icon: Icon }) => <NavLink key={to} to={to} className={({ isActive }) => isActive ? "is-active" : ""} end={to === "/"}><Icon size={18} /><span>{label}</span></NavLink>)}</nav>
     </div>
   );
 }
