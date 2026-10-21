@@ -79,3 +79,7 @@ html[data-theme="light"] .pomodoro-phase,html[data-theme="light"] .pomodoro-hint
 @media(max-width:720px){.offline-tools-grid{grid-template-columns:1fr}.productivity-widget{grid-column:auto}.productivity-metrics strong{font-size:16px}.founder-story{grid-template-columns:1fr;gap:20px}.founder-story-portrait{height:300px}.founder-photo{width:88px;height:88px}}
 
 @media(max-width:900px) and (min-width:721px){.offline-tools-grid{grid-template-columns:1fr}.productivity-widget{grid-column:auto}}
+
+/* Clean mobile chrome: no account avatar and no logo inside the dashboard hero */
+.topbar-actions { justify-content:flex-end; }.hero-orbit .orbit-core { background:radial-gradient(circle,rgba(102,145,255,.42),rgba(53,92,196,.08) 55%,transparent 70%); box-shadow:0 0 70px rgba(75,123,255,.16); }.hero-orbit .orbit-tag { background:rgba(9,18,43,.74); }.avatar { display:none; }
+@media(max-width:720px){.hero-panel{min-height:570px;padding-bottom:28px}.hero-orbit{display:none}.hero-footer{bottom:22px}.hero-panel:after{width:360px;height:360px;top:42%;right:-35%;opacity:.7}.hero-copy h1{font-size:clamp(48px,13vw,64px)}.mobile-nav{bottom:13px;left:12px;right:12px;border-radius:25px;padding:7px}.mobile-nav a{padding:12px 5px;font-size:8px}.mobile-nav a svg{width:20px;height:20px}.page-frame{padding-bottom:136px}}

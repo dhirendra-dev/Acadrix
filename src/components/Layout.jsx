@@ -26,7 +26,7 @@ export default function Layout() {
       <header className="topbar">
         <div className="mobile-brand"><img src="/brand/acadrix-logo.png" alt="Acadrix" /><strong>Acadrix</strong></div>
         <div className="breadcrumbs"><span>Workspace</span><b>/</b><strong>{location.pathname === "/" ? "Overview" : location.pathname.slice(1).replace("/", " · ")}</strong></div>
-        <div className="topbar-actions"><button className="icon-button" aria-label="Search"><Search size={18} /></button><ThemeControls /><div className="avatar">D</div></div>
+        <div className="topbar-actions"><button className="icon-button" aria-label="Search"><Search size={18} /></button><ThemeControls /></div>
       </header>
       <motion.div key={location.pathname} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .24, ease: "easeOut" }} className="page-frame"><Outlet /></motion.div>
     </main>
