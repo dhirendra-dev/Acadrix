@@ -1,1 +1,1 @@
-{"routes":[{"path":"/","title":"Acadrix dashboard"},{"path":"/dashboard","title":"Acadrix progress dashboard"},{"path":"/resources","title":"Resource library"},{"path":"/requests","title":"Resource requests"},{"path":"/resource/:id","title":"Resource detail"}]}
+{"routes":[{"path":"/","title":"Acadrix dashboard"},{"path":"/dashboard","title":"Acadrix progress dashboard"},{"path":"/resources","title":"Resource library"},{"path":"/requests","title":"Resource requests"},{"path":"/about","title":"About Acadrix and policy"},{"path":"/resource/:id","title":"Resource detail"}]}

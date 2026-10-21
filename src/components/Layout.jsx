@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useLocation } from "react-router-dom";
-import { BarChart3, BookOpen, Compass, Inbox, Search, Settings2 } from "lucide-react";
+import { BarChart3, BookOpen, CircleHelp, Compass, Inbox, MessageCircle, Search, Settings2 } from "lucide-react";
 import { motion } from "framer-motion";
 import ThemeControls from "@/components/ThemeControls";
 
@@ -7,6 +7,7 @@ const navItems = [
   { to: "/", label: "Overview", icon: Compass },
   { to: "/resources", label: "Library", icon: BookOpen },
   { to: "/requests", label: "Requests", icon: Inbox },
+  { to: "/about", label: "About & policy", icon: CircleHelp },
 ];
 
 export default function Layout() {
@@ -19,7 +20,7 @@ export default function Layout() {
       <div className="rail-label rail-label-lower">Insights</div>
       <button className="rail-link rail-button" type="button"><BarChart3 size={18} /><span>Progress</span><em>Soon</em></button>
       <button className="rail-link rail-button" type="button"><Settings2 size={18} /><span>Preferences</span></button>
-      <div className="rail-footer"><div className="status-dot" /><div><strong>Local workspace</strong><span>Your data stays here</span></div></div>
+      <a className="channel-rail-link" href="https://whatsapp.com/channel/0029VbEQ8cL1noz6gXhLXT3c" target="_blank" rel="noreferrer"><MessageCircle size={16} /><span><strong>WhatsApp channel</strong><small>Updates by Dhirendra Kumar</small></span></a><div className="rail-footer"><div className="status-dot" /><div><strong>Local workspace</strong><span>No account or cloud sync</span></div></div>
     </aside>
     <main className="main-stage">
       <header className="topbar">

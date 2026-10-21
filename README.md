@@ -21,3 +21,9 @@ The app stores resource requests, bookmarks, theme preferences, study notes, and
 ## Project structure
 
 The React entrypoint lives in `src/main.jsx`. The application shell and responsive navigation are in `src/components`, the user-facing routes are in `src/pages`, and the local-first data layer is in `src/lib/store.js`. The supplied Acadrix logo is stored at `public/brand/acadrix-logo.png`.
+
+## Product policy and community
+
+Acadrix is intentionally local-only: there is no account creation, login, cloud database, server-side profile, or background synchronization. Bookmarks, notes, theme preferences, progress, and study-session logs remain in the browser on the current device. Clearing browser storage removes that local workspace.
+
+The `/about` page contains the privacy policy, responsible-use guidance, founder information, and the official WhatsApp community link. The current founder and maintainer is **Dhirendra Kumar**. Community updates are shared at: https://whatsapp.com/channel/0029VbEQ8cL1noz6gXhLXT3c

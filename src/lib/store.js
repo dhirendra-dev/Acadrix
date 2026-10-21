@@ -22,6 +22,7 @@ const seedState = {
   bookmarks: ["res-1", "res-3"],
   notes: {},
   progress: { "res-1": 35, "res-3": 60, "res-5": 80 },
+  tracker: { dailyGoal: 60, sessions: [] },
   preferences: { theme: "dark", accent: "blue" },
 };
 
@@ -32,7 +33,7 @@ function readState() {
     const baseResources = parsed.resources || seedState.resources;
     const existingIds = new Set(baseResources.map((resource) => resource.id));
     const resources = [...baseResources, ...studyCatalog.filter((resource) => !existingIds.has(resource.id))];
-    return { ...seedState, ...parsed, resources, notes: { ...seedState.notes, ...(parsed.notes || {}) }, progress: { ...seedState.progress, ...(parsed.progress || {}) }, preferences: { ...seedState.preferences, ...(parsed.preferences || {}) } };
+    return { ...seedState, ...parsed, resources, notes: { ...seedState.notes, ...(parsed.notes || {}) }, progress: { ...seedState.progress, ...(parsed.progress || {}) }, tracker: { ...seedState.tracker, ...(parsed.tracker || {}), sessions: parsed.tracker?.sessions || seedState.tracker.sessions }, preferences: { ...seedState.preferences, ...(parsed.preferences || {}) } };
   } catch { return seedState; }
 }
 
@@ -57,6 +58,20 @@ export const store = {
   saveNote: (id, value) => { state = { ...state, notes: { ...state.notes, [id]: value } }; emit(); },
   getProgress: (id) => state.progress[id] || 0,
   setProgress: (id, value) => { const progress = Math.max(0, Math.min(100, Number(value) || 0)); state = { ...state, progress: { ...state.progress, [id]: progress } }; emit(); },
+  getTrackerSummary: () => {
+    const sessions = state.tracker.sessions || [];
+    const now = new Date();
+    const today = now.toISOString().slice(0, 10);
+    const monday = new Date(now);
+    const day = monday.getDay() || 7;
+    monday.setDate(monday.getDate() - day + 1); monday.setHours(0, 0, 0, 0);
+    const weekStart = monday.getTime();
+    const todaySessions = sessions.filter((session) => session.date.slice(0, 10) === today);
+    const weekSessions = sessions.filter((session) => new Date(session.date).getTime() >= weekStart);
+    return { dailyGoal: state.tracker.dailyGoal, todayMinutes: todaySessions.reduce((sum, session) => sum + session.minutes, 0), weeklyMinutes: weekSessions.reduce((sum, session) => sum + session.minutes, 0), todaySessions: todaySessions.length, weekSessions: weekSessions.length, recentSessions: sessions.slice(-5).reverse() };
+  },
+  logStudySession: (minutes) => { const value = Math.max(1, Math.min(480, Number(minutes) || 0)); const session = { id: `session-${Date.now()}`, date: new Date().toISOString(), minutes: value }; state = { ...state, tracker: { ...state.tracker, sessions: [...(state.tracker.sessions || []), session].slice(-500) } }; emit(); },
+  setDailyGoal: (minutes) => { const dailyGoal = Math.max(15, Math.min(480, Number(minutes) || 60)); state = { ...state, tracker: { ...state.tracker, dailyGoal } }; emit(); },
   setPreferences: (preferences) => { state = { ...state, preferences: { ...state.preferences, ...preferences } }; emit(); },
 };
 
