@@ -8,8 +8,8 @@ export default function Resources() {
   const [active, setActive] = useState("All");
   const [, refresh] = useState(0);
   const snapshot = store.snapshot();
-  const subjects = ["All", ...snapshot.folders.map((folder) => folder.name)];
-  const resources = useMemo(() => snapshot.resources.filter((resource) => (active === "All" || resource.subject === active) && `${resource.title} ${resource.subject} ${resource.type}`.toLowerCase().includes(query.toLowerCase())), [snapshot, active, query]);
+  const subjects = ["All", ...snapshot.folders.map((folder) => folder.name), "Mixed"];
+  const resources = useMemo(() => snapshot.resources.filter((resource) => (active === "All" || resource.subject === active) && `${resource.title} ${resource.subject} ${resource.type} ${resource.meta}`.toLowerCase().includes(query.toLowerCase())), [snapshot, active, query]);
   const toggleBookmark = (event, id) => { event.preventDefault(); store.toggleBookmark(id); refresh((value) => value + 1); };
   return <div className="library-page"><div className="page-heading"><div><span className="eyebrow">The knowledge base</span><h1>Resource library</h1><p>Curated material, arranged for the way you actually study.</p></div><div className="heading-count"><strong>{resources.length}</strong><span>visible resources</span></div></div>
     <div className="library-toolbar"><div className="search-field"><Search size={18} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search notes, PYQs, revision..." aria-label="Search resources" /></div><button className="filter-button"><SlidersHorizontal size={16} /> Filters <span>0</span></button></div>

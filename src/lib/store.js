@@ -1,3 +1,5 @@
+import { studyCatalog } from "@/lib/studyCatalog";
+
 const STORAGE_KEY = "acadrix.workspace.v1";
 
 const seedState = {
@@ -13,6 +15,7 @@ const seedState = {
     { id: "res-4", folderId: "physics", title: "Electrostatics DPP — Set 04", type: "Daily practice", subject: "Physics", meta: "20 questions · 45 min", accent: "blue", pdfUrl: "/demo-acadrix-notes.pdf" },
     { id: "res-5", folderId: "chemistry", title: "Coordination Compounds Revision", type: "Revision", subject: "Chemistry", meta: "16 pages · NCERT aligned", accent: "violet", pdfUrl: "/demo-acadrix-notes.pdf" },
     { id: "res-6", folderId: "mathematics", title: "Conic Sections Formula Deck", type: "Formula deck", subject: "Mathematics", meta: "8 cards · Quick review", accent: "cyan", pdfUrl: "/demo-acadrix-notes.pdf" },
+    ...studyCatalog,
   ],
   requests: [],
   recent: ["res-1", "res-3", "res-5"],
@@ -25,7 +28,10 @@ function readState() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     const parsed = stored ? JSON.parse(stored) : {};
-    return { ...seedState, ...parsed, notes: { ...seedState.notes, ...(parsed.notes || {}) }, preferences: { ...seedState.preferences, ...(parsed.preferences || {}) } };
+    const baseResources = parsed.resources || seedState.resources;
+    const existingIds = new Set(baseResources.map((resource) => resource.id));
+    const resources = [...baseResources, ...studyCatalog.filter((resource) => !existingIds.has(resource.id))];
+    return { ...seedState, ...parsed, resources, notes: { ...seedState.notes, ...(parsed.notes || {}) }, preferences: { ...seedState.preferences, ...(parsed.preferences || {}) } };
   } catch { return seedState; }
 }
 
