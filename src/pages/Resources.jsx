@@ -1,11 +1,12 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { ArrowUpRight, Bookmark, ChevronRight, FileText, Filter, Folder, Search, SlidersHorizontal } from "lucide-react";
 import { store } from "@/lib/store";
 
 export default function Resources() {
   const [query, setQuery] = useState("");
-  const [active, setActive] = useState("All");
+  const [searchParams] = useSearchParams();
+  const [active, setActive] = useState(searchParams.get("subject") || "All");
   const [, refresh] = useState(0);
   const snapshot = store.snapshot();
   const subjects = ["All", ...snapshot.folders.map((folder) => folder.name), "Mixed"];

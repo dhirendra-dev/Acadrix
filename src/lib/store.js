@@ -21,6 +21,7 @@ const seedState = {
   recent: ["res-1", "res-3", "res-5"],
   bookmarks: ["res-1", "res-3"],
   notes: {},
+  progress: { "res-1": 35, "res-3": 60, "res-5": 80 },
   preferences: { theme: "dark", accent: "blue" },
 };
 
@@ -31,7 +32,7 @@ function readState() {
     const baseResources = parsed.resources || seedState.resources;
     const existingIds = new Set(baseResources.map((resource) => resource.id));
     const resources = [...baseResources, ...studyCatalog.filter((resource) => !existingIds.has(resource.id))];
-    return { ...seedState, ...parsed, resources, notes: { ...seedState.notes, ...(parsed.notes || {}) }, preferences: { ...seedState.preferences, ...(parsed.preferences || {}) } };
+    return { ...seedState, ...parsed, resources, notes: { ...seedState.notes, ...(parsed.notes || {}) }, progress: { ...seedState.progress, ...(parsed.progress || {}) }, preferences: { ...seedState.preferences, ...(parsed.preferences || {}) } };
   } catch { return seedState; }
 }
 
@@ -54,6 +55,8 @@ export const store = {
   toggleBookmark: (id) => { const bookmarks = state.bookmarks.includes(id) ? state.bookmarks.filter((item) => item !== id) : [id, ...state.bookmarks]; state = { ...state, bookmarks }; emit(); },
   markRecent: (id) => { state = { ...state, recent: [id, ...state.recent.filter((item) => item !== id)].slice(0, 5) }; emit(); },
   saveNote: (id, value) => { state = { ...state, notes: { ...state.notes, [id]: value } }; emit(); },
+  getProgress: (id) => state.progress[id] || 0,
+  setProgress: (id, value) => { const progress = Math.max(0, Math.min(100, Number(value) || 0)); state = { ...state, progress: { ...state.progress, [id]: progress } }; emit(); },
   setPreferences: (preferences) => { state = { ...state, preferences: { ...state.preferences, ...preferences } }; emit(); },
 };
 

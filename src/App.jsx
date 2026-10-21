@@ -15,5 +15,5 @@ export default function App() {
   const [ready, setReady] = useState(false);
   useEffect(() => { const timer = window.setTimeout(() => setReady(true), 260); return () => window.clearTimeout(timer); }, []);
   if (!ready) return <LoadingScreen />;
-  return <BrowserRouter><AnimatePresence mode="wait"><Routes><Route element={<Layout />}><Route path="/" element={<Home />} /><Route path="/resources" element={<Resources />} /><Route path="/requests" element={<ResourceRequests />} /><Route path="/resource/:id" element={<ResourceDetail />} /><Route path="*" element={<Navigate to="/" replace />} /></Route></Routes></AnimatePresence></BrowserRouter>;
+  return <BrowserRouter><AnimatePresence mode="wait"><Routes><Route element={<Layout />}><Route path="/" element={<Home />} /><Route path="/dashboard" element={<Home />} /><Route path="/resources" element={<Resources />} /><Route path="/requests" element={<ResourceRequests />} /><Route path="/resource/:id" element={<ResourceDetail />} /><Route path="*" element={<Navigate to="/" replace />} /></Route></Routes></AnimatePresence></BrowserRouter>;
 }
