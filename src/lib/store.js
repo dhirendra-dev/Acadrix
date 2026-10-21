@@ -76,6 +76,20 @@ export const store = {
     return { dailyGoal: state.tracker.dailyGoal, todayMinutes: todaySessions.reduce((sum, session) => sum + session.minutes, 0), weeklyMinutes: weekSessions.reduce((sum, session) => sum + session.minutes, 0), todaySessions: todaySessions.length, weekSessions: weekSessions.length, recentSessions: sessions.slice(-5).reverse() };
   },
   logStudySession: (minutes) => { const value = Math.max(1, Math.min(480, Number(minutes) || 0)); const session = { id: `session-${Date.now()}`, date: new Date().toISOString(), minutes: value }; state = { ...state, tracker: { ...state.tracker, sessions: [...(state.tracker.sessions || []), session].slice(-500) } }; emit(); },
+  getProductivitySummary: () => {
+    const sessions = state.tracker.sessions || [];
+    const now = new Date();
+    const keyFor = (date) => new Date(date).toISOString().slice(0, 10);
+    const todayKey = keyFor(now);
+    const dates = new Set(sessions.map((session) => keyFor(session.date)));
+    let streak = 0;
+    const cursor = new Date(now); cursor.setHours(0, 0, 0, 0);
+    if (!dates.has(todayKey)) cursor.setDate(cursor.getDate() - 1);
+    while (dates.has(keyFor(cursor))) { streak += 1; cursor.setDate(cursor.getDate() - 1); }
+    const weekDays = Array.from({ length: 7 }, (_, index) => { const date = new Date(now); date.setHours(0, 0, 0, 0); date.setDate(date.getDate() - (6 - index)); const key = keyFor(date); return { key, label: date.toLocaleDateString(undefined, { weekday: "short" }).slice(0, 2), minutes: sessions.filter((session) => keyFor(session.date) === key).reduce((sum, session) => sum + session.minutes, 0) }; });
+    const totalMinutes = sessions.reduce((sum, session) => sum + session.minutes, 0);
+    return { streak, weekDays, totalMinutes, totalSessions: sessions.length, achievements: [streak >= 1, sessions.length >= 5, totalMinutes >= 300, streak >= 7].filter(Boolean).length };
+  },
   setDailyGoal: (minutes) => { const dailyGoal = Math.max(15, Math.min(480, Number(minutes) || 60)); state = { ...state, tracker: { ...state.tracker, dailyGoal } }; emit(); },
   addTask: (title) => { const cleanTitle = String(title || "").trim(); if (!cleanTitle) return; state = { ...state, planner: { ...state.planner, tasks: [...state.planner.tasks, { id: `task-${Date.now()}`, title: cleanTitle, done: false }] } }; emit(); },
   toggleTask: (id) => { state = { ...state, planner: { ...state.planner, tasks: state.planner.tasks.map((task) => task.id === id ? { ...task, done: !task.done } : task) } }; emit(); },

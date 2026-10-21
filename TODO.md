@@ -11,3 +11,6 @@
 - [x] Add persistent dark/light mode, accent customization, embedded PDF viewing, and per-resource autosaving notes.
 
 - [x] Redesign the UI around the supplied Apple-inspired reference: larger type, spacious dark hero, glass surfaces, floating dock navigation, and responsive mobile-safe layouts.
+
+- [x] Add Dhirendra Kumar’s supplied portrait, detailed founder biography, and GitHub, email, and WhatsApp links to About.
+- [x] Upgrade the local timer into a Pomodoro cycle and add a local productivity widget with streaks, weekly bars, sessions, and achievements.
