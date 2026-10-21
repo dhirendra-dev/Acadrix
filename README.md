@@ -16,7 +16,7 @@ npm run build
 npm run preview
 ```
 
-The app stores resource requests, bookmarks, and lightweight activity in browser local storage. The seeded library gives a fresh install a useful starting point while keeping the project easy to connect to a backend later if needed.
+The app stores resource requests, bookmarks, theme preferences, study notes, and lightweight activity in browser local storage. Resource detail pages include an embedded PDF viewer and autosaving notes workspace. The seeded library gives a fresh install a useful starting point while keeping the project easy to connect to a backend later if needed.
 
 ## Project structure
 

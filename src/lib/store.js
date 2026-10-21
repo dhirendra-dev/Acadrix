@@ -7,30 +7,30 @@ const seedState = {
     { id: "mathematics", name: "Mathematics", subtitle: "Algebra, calculus & coordinate geometry", color: "cyan", count: 31, progress: 72 },
   ],
   resources: [
-    { id: "res-1", folderId: "physics", title: "Rotational Motion — Complete Notes", type: "Notes", subject: "Physics", meta: "42 pages · Updated today", accent: "blue", url: "#" },
-    { id: "res-2", folderId: "chemistry", title: "Organic Reaction Map", type: "Cheat sheet", subject: "Chemistry", meta: "1 page · High yield", accent: "violet", url: "#" },
-    { id: "res-3", folderId: "mathematics", title: "Definite Integration PYQs", type: "Practice set", subject: "Mathematics", meta: "35 questions · JEE Main", accent: "cyan", url: "#" },
-    { id: "res-4", folderId: "physics", title: "Electrostatics DPP — Set 04", type: "Daily practice", subject: "Physics", meta: "20 questions · 45 min", accent: "blue", url: "#" },
-    { id: "res-5", folderId: "chemistry", title: "Coordination Compounds Revision", type: "Revision", subject: "Chemistry", meta: "16 pages · NCERT aligned", accent: "violet", url: "#" },
-    { id: "res-6", folderId: "mathematics", title: "Conic Sections Formula Deck", type: "Formula deck", subject: "Mathematics", meta: "8 cards · Quick review", accent: "cyan", url: "#" },
+    { id: "res-1", folderId: "physics", title: "Rotational Motion — Complete Notes", type: "Notes", subject: "Physics", meta: "42 pages · Updated today", accent: "blue", pdfUrl: "/demo-acadrix-notes.pdf" },
+    { id: "res-2", folderId: "chemistry", title: "Organic Reaction Map", type: "Cheat sheet", subject: "Chemistry", meta: "1 page · High yield", accent: "violet", pdfUrl: "/demo-acadrix-notes.pdf" },
+    { id: "res-3", folderId: "mathematics", title: "Definite Integration PYQs", type: "Practice set", subject: "Mathematics", meta: "35 questions · JEE Main", accent: "cyan", pdfUrl: "/demo-acadrix-notes.pdf" },
+    { id: "res-4", folderId: "physics", title: "Electrostatics DPP — Set 04", type: "Daily practice", subject: "Physics", meta: "20 questions · 45 min", accent: "blue", pdfUrl: "/demo-acadrix-notes.pdf" },
+    { id: "res-5", folderId: "chemistry", title: "Coordination Compounds Revision", type: "Revision", subject: "Chemistry", meta: "16 pages · NCERT aligned", accent: "violet", pdfUrl: "/demo-acadrix-notes.pdf" },
+    { id: "res-6", folderId: "mathematics", title: "Conic Sections Formula Deck", type: "Formula deck", subject: "Mathematics", meta: "8 cards · Quick review", accent: "cyan", pdfUrl: "/demo-acadrix-notes.pdf" },
   ],
   requests: [],
   recent: ["res-1", "res-3", "res-5"],
   bookmarks: ["res-1", "res-3"],
+  notes: {},
+  preferences: { theme: "dark", accent: "blue" },
 };
 
 function readState() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? { ...seedState, ...JSON.parse(stored) } : seedState;
-  } catch {
-    return seedState;
-  }
+    const parsed = stored ? JSON.parse(stored) : {};
+    return { ...seedState, ...parsed, notes: { ...seedState.notes, ...(parsed.notes || {}) }, preferences: { ...seedState.preferences, ...(parsed.preferences || {}) } };
+  } catch { return seedState; }
 }
 
 let state = readState();
 const listeners = new Set();
-
 function emit() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* private mode */ }
   listeners.forEach((listener) => listener(state));
@@ -43,19 +43,12 @@ export const store = {
   folders: () => state.folders,
   getResource: (id) => state.resources.find((resource) => resource.id === id),
   getFolder: (id) => state.folders.find((folder) => folder.id === id),
-  addRequest: (title) => {
-    state = { ...state, requests: [{ id: `request-${Date.now()}`, title, status: "In review", createdAt: new Date().toISOString() }, ...state.requests] };
-    emit();
-  },
-  toggleBookmark: (id) => {
-    const bookmarks = state.bookmarks.includes(id) ? state.bookmarks.filter((item) => item !== id) : [id, ...state.bookmarks];
-    state = { ...state, bookmarks };
-    emit();
-  },
-  markRecent: (id) => {
-    state = { ...state, recent: [id, ...state.recent.filter((item) => item !== id)].slice(0, 5) };
-    emit();
-  },
+  getNote: (id) => state.notes[id] || "",
+  addRequest: (title) => { state = { ...state, requests: [{ id: `request-${Date.now()}`, title, status: "In review", createdAt: new Date().toISOString() }, ...state.requests] }; emit(); },
+  toggleBookmark: (id) => { const bookmarks = state.bookmarks.includes(id) ? state.bookmarks.filter((item) => item !== id) : [id, ...state.bookmarks]; state = { ...state, bookmarks }; emit(); },
+  markRecent: (id) => { state = { ...state, recent: [id, ...state.recent.filter((item) => item !== id)].slice(0, 5) }; emit(); },
+  saveNote: (id, value) => { state = { ...state, notes: { ...state.notes, [id]: value } }; emit(); },
+  setPreferences: (preferences) => { state = { ...state, preferences: { ...state.preferences, ...preferences } }; emit(); },
 };
 
 export const formatRelative = (date) => {
