@@ -1,7 +1,26 @@
-# Acadrix redesign plan
+# Acadrix visual redesign plan
 
-Acadrix is a focused academic command center for serious JEE preparation: a calm place to find the right material, request what is missing, and return to study without friction.
+Acadrix remains a standalone, local-first JEE study command center. This visual pass follows the supplied reference image: a dark, spacious mobile product screen with a large hero card, oversized type, restrained chrome, glass surfaces, and a floating bottom dock.
 
-The visual direction is an editorial dark-mode control room with aerospace-inspired precision. Deep ink and navy create focus; electric blue is the signature action color; violet is reserved for progress and discovery; soft ice text maintains legibility. A persistent desktop rail becomes a compact mobile dock. Thin technical dividers, orbital glows, and branded logo panels create the signature system without distracting from study content.
+## Design movement
 
-The app is standalone and local-first. It uses browser storage for folders, resources, bookmarks, session activity, and requests. No hosted app platform, vendor SDK, or platform-specific backend remains in the source tree. The supplied logo is local at `/brand/acadrix-logo.png`, while `/manus-routes.json` and `app.config.ts` provide deployment metadata.
+Apple-inspired premium utility UI: calm, editorial, and tactile rather than dense dashboard chrome.
+
+## Core principles
+
+- Make the headline and primary study action large enough to scan immediately.
+- Replace the fixed sidebar feeling with a floating dock that works on desktop and mobile.
+- Use generous spacing, soft glass borders, deep navy surfaces, and electric-blue focus states.
+- Keep every existing feature local-first and visually subordinate to the next study action.
+
+## Signature elements
+
+The oversized progress hero, the translucent floating navigation dock, and the orbital Acadrix brand mark remain the product motifs. Typography uses Plus Jakarta Sans for readable product copy and DM Mono for compact status labels.
+
+## Reference
+
+The supplied visual reference was inspected from: https://img.sanishtech.com/u/8c5b5d3a24b2dd426bca0e7193194fc7.jpg
+
+## Implementation
+
+The shell hides the old desktop rail in favor of a shared floating dock, enlarges dashboard typography and cards, and adds mobile-safe bottom spacing. Existing routes, local tracker, planner, favorites, PDF viewer, notes, theme switcher, About/policy page, and local backup tools are preserved. No account, cloud database, vendor SDK, or server-side profile is introduced.

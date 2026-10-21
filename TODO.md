@@ -9,3 +9,5 @@
 - [x] Verify the result with lint, typecheck, production build, and HTTP smoke testing.
 
 - [x] Add persistent dark/light mode, accent customization, embedded PDF viewing, and per-resource autosaving notes.
+
+- [x] Redesign the UI around the supplied Apple-inspired reference: larger type, spacious dark hero, glass surfaces, floating dock navigation, and responsive mobile-safe layouts.
