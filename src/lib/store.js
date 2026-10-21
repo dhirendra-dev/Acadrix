@@ -23,6 +23,11 @@ const seedState = {
   notes: {},
   progress: { "res-1": 35, "res-3": 60, "res-5": 80 },
   tracker: { dailyGoal: 60, sessions: [] },
+  planner: { tasks: [
+    { id: "task-1", title: "Review one bookmarked resource", done: false },
+    { id: "task-2", title: "Solve 10 practice questions", done: false },
+    { id: "task-3", title: "Write one takeaway in your notes", done: false },
+  ] },
   preferences: { theme: "dark", accent: "blue" },
 };
 
@@ -33,7 +38,7 @@ function readState() {
     const baseResources = parsed.resources || seedState.resources;
     const existingIds = new Set(baseResources.map((resource) => resource.id));
     const resources = [...baseResources, ...studyCatalog.filter((resource) => !existingIds.has(resource.id))];
-    return { ...seedState, ...parsed, resources, notes: { ...seedState.notes, ...(parsed.notes || {}) }, progress: { ...seedState.progress, ...(parsed.progress || {}) }, tracker: { ...seedState.tracker, ...(parsed.tracker || {}), sessions: parsed.tracker?.sessions || seedState.tracker.sessions }, preferences: { ...seedState.preferences, ...(parsed.preferences || {}) } };
+    return { ...seedState, ...parsed, resources, notes: { ...seedState.notes, ...(parsed.notes || {}) }, progress: { ...seedState.progress, ...(parsed.progress || {}) }, tracker: { ...seedState.tracker, ...(parsed.tracker || {}), sessions: parsed.tracker?.sessions || seedState.tracker.sessions }, planner: { ...seedState.planner, ...(parsed.planner || {}), tasks: parsed.planner?.tasks || seedState.planner.tasks }, preferences: { ...seedState.preferences, ...(parsed.preferences || {}) } };
   } catch { return seedState; }
 }
 
@@ -72,6 +77,11 @@ export const store = {
   },
   logStudySession: (minutes) => { const value = Math.max(1, Math.min(480, Number(minutes) || 0)); const session = { id: `session-${Date.now()}`, date: new Date().toISOString(), minutes: value }; state = { ...state, tracker: { ...state.tracker, sessions: [...(state.tracker.sessions || []), session].slice(-500) } }; emit(); },
   setDailyGoal: (minutes) => { const dailyGoal = Math.max(15, Math.min(480, Number(minutes) || 60)); state = { ...state, tracker: { ...state.tracker, dailyGoal } }; emit(); },
+  addTask: (title) => { const cleanTitle = String(title || "").trim(); if (!cleanTitle) return; state = { ...state, planner: { ...state.planner, tasks: [...state.planner.tasks, { id: `task-${Date.now()}`, title: cleanTitle, done: false }] } }; emit(); },
+  toggleTask: (id) => { state = { ...state, planner: { ...state.planner, tasks: state.planner.tasks.map((task) => task.id === id ? { ...task, done: !task.done } : task) } }; emit(); },
+  removeTask: (id) => { state = { ...state, planner: { ...state.planner, tasks: state.planner.tasks.filter((task) => task.id !== id) } }; emit(); },
+  exportBackup: () => JSON.stringify({ app: "Acadrix", version: 1, exportedAt: new Date().toISOString(), state }),
+  importBackup: (payload) => { const incoming = typeof payload === "string" ? JSON.parse(payload) : payload; if (!incoming || incoming.app !== "Acadrix" || !incoming.state) throw new Error("Invalid Acadrix backup"); state = { ...seedState, ...incoming.state, notes: { ...seedState.notes, ...(incoming.state.notes || {}) }, progress: { ...seedState.progress, ...(incoming.state.progress || {}) }, preferences: { ...seedState.preferences, ...(incoming.state.preferences || {}) }, tracker: { ...seedState.tracker, ...(incoming.state.tracker || {}) }, planner: { ...seedState.planner, ...(incoming.state.planner || {}) } }; emit(); },
   setPreferences: (preferences) => { state = { ...state, preferences: { ...state.preferences, ...preferences } }; emit(); },
 };
 
