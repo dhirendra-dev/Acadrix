@@ -1,0 +1,38 @@
+{
+  "name": "Folder",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Folder Name"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description",
+      "default": ""
+    },
+    "color": {
+      "type": "string",
+      "title": "Color",
+      "enum": [
+        "blue",
+        "green",
+        "purple",
+        "orange",
+        "rose",
+        "cyan",
+        "amber",
+        "indigo"
+      ],
+      "default": "blue"
+    },
+    "pinned": {
+      "type": "boolean",
+      "title": "Pinned to Home",
+      "default": false
+    }
+  },
+  "required": [
+    "name"
+  ]
+}

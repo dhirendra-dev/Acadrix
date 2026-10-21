@@ -1,0 +1,39 @@
+{
+  "name": "ResourceRequest",
+  "type": "object",
+  "properties": {
+    "book_name": {
+      "type": "string",
+      "title": "Book/Resource Name"
+    },
+    "device_id": {
+      "type": "string",
+      "title": "Device ID"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pending",
+        "fulfilled",
+        "already_available",
+        "other"
+      ],
+      "default": "pending"
+    },
+    "resource_url": {
+      "type": "string",
+      "title": "Resource URL",
+      "default": ""
+    },
+    "admin_note": {
+      "type": "string",
+      "title": "Admin Reply",
+      "default": ""
+    }
+  },
+  "required": [
+    "book_name",
+    "device_id"
+  ]
+}

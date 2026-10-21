@@ -1,0 +1,33 @@
+{
+  "name": "ChatGroup",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Group Name"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description",
+      "default": ""
+    },
+    "creator_device_id": {
+      "type": "string",
+      "title": "Creator Device ID"
+    },
+    "creator_name": {
+      "type": "string",
+      "title": "Creator Name"
+    },
+    "join_code": {
+      "type": "string",
+      "title": "Join Code"
+    }
+  },
+  "required": [
+    "name",
+    "creator_device_id",
+    "creator_name",
+    "join_code"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Title"
+    },
+    "message": {
+      "type": "string",
+      "title": "Message"
+    },
+    "type": {
+      "type": "string",
+      "title": "Type",
+      "enum": [
+        "info",
+        "warning",
+        "announcement"
+      ],
+      "default": "info"
+    },
+    "active": {
+      "type": "boolean",
+      "title": "Active",
+      "default": true
+    },
+    "scheduled_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Scheduled At"
+    },
+    "image_url": {
+      "type": "string",
+      "title": "Image URL",
+      "default": ""
+    }
+  },
+  "required": [
+    "title",
+    "message"
+  ]
+}
