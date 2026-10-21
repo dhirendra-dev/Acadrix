@@ -24,3 +24,7 @@ The supplied visual reference was inspected from: https://img.sanishtech.com/u/8
 ## Implementation
 
 The shell hides the old desktop rail in favor of a shared floating dock, enlarges dashboard typography and cards, and adds mobile-safe bottom spacing. Existing routes, local tracker, planner, favorites, PDF viewer, notes, theme switcher, About/policy page, and local backup tools are preserved. No account, cloud database, vendor SDK, or server-side profile is introduced.
+
+## Liquid glass refinement
+
+The visual system now uses a next-generation iOS-inspired liquid-glass treatment: system-style typography, translucent layered surfaces, specular borders, soft environmental color, rounded sheets, and a tactile floating dock. The approach is inspiration rather than a copy of Apple assets or proprietary UI, and all local study functionality remains unchanged.

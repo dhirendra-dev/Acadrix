@@ -14,3 +14,5 @@
 
 - [x] Add Dhirendra Kumar’s supplied portrait, detailed founder biography, and GitHub, email, and WhatsApp links to About.
 - [x] Upgrade the local timer into a Pomodoro cycle and add a local productivity widget with streaks, weekly bars, sessions, and achievements.
+
+- [x] Refine the visual language into a next-generation iOS-inspired liquid-glass interface with system typography, layered translucency, specular surfaces, and a tactile mobile dock.
